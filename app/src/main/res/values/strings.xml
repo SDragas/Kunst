@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Kunst</string>
+    <string name="dont_have_account">Don\'t have account</string>
+    <string name="login">Login</string>
+    <string name="sign_up">SignUp</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="search">Search...</string>
+    <string name="details">Details</string>
+    <string name="neki_naslov">Neki naslov</string>
+    <string name="logout">Logout</string>
+    <string name="go">Go</string>
+    <string name="back">Back</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="profile">Profile</string>
+    <string name="favourites">Favourites</string>
+    <string name="home">Home</string>
+</resources>

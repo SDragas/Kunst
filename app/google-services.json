@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "180411895872",
+    "firebase_url": "https://kunst-39a80.firebaseio.com",
+    "project_id": "kunst-39a80",
+    "storage_bucket": "kunst-39a80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180411895872:android:40777606d3c68b6f",
+        "android_client_info": {
+          "package_name": "hr.ferit.srdandragas.kunst"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180411895872-bgep03bqtdrjsia3fhelr3776vbcqsfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hr.ferit.srdandragas.kunst",
+            "certificate_hash": "b5134f8741d0269a3511e9a5a64f63876b1d1049"
+          }
+        },
+        {
+          "client_id": "180411895872-kld480ln8o22gnfrml9718h6q6ohdpvj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjnIEEfJUufgOsJ5qjQiFT-wdq94IZnAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180411895872-kld480ln8o22gnfrml9718h6q6ohdpvj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
