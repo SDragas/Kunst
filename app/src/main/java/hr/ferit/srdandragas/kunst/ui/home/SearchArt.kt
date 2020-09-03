@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import hr.ferit.srdandragas.kunst.KunstApp
 
 import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.common.showFragment
@@ -67,6 +69,7 @@ class SearchArt : Fragment() {
             if (response.isSuccessful) {
                 adapter.setData(response.body()!!.data)
             }
+
         }
     }
 

@@ -109,11 +109,6 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        } else {
-            Toast.makeText(
-                baseContext, "Login failed.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 }

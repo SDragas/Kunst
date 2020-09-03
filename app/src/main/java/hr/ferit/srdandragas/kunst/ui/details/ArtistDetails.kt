@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.item_artist.view.*
 class ArtistDetails : Fragment() {
     private val db = FavouritesDatabase.getInstance().favouritesDao()
     private val repository = ArtDetailsRepository()
-    private var isFavourite = false;
+    private var isFavourite = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_artist_details, container, false)

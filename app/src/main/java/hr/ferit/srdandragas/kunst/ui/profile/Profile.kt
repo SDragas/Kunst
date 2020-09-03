@@ -43,6 +43,7 @@ class Profile : Fragment() {
     private fun onSignOutClicked() {
         auth.signOut()
         startActivity(Intent(KunstApp.ApplicationContext, MainActivity::class.java))
+        activity?.finish()
     }
 
 

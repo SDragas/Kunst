@@ -43,7 +43,11 @@ class ArtistHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
                 .placeholder(R.drawable.ic_launcher_background)
                 .load(data.images.web.url)
         }
-
+        else{
+            Ion.with(itemView.artDetailsFeedImage)
+                .placeholder(R.drawable.ic_launcher_background)
+                .load("https://upload.wikimedia.org/wikipedia/commons/9/95/Jan_Matejko_-_Sta%C5%84czyk_-_Google_Art_Project.jpg")
+        }
 
     }
 }
