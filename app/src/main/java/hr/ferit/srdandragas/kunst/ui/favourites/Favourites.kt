@@ -41,7 +41,7 @@ class Favourites : Fragment() {
     }
 
     private fun onArtClicked(art: FavouritesDetails){
-        val selectedArt: ArtDetails = ArtDetails(art.title, art.url, art.description)
+        val selectedArt: ArtDetails = ArtDetails(art.title, art.url, art.description, art.url)
         repository.onArtSelect(selectedArt)
         activity?.showFragment(R.id.frgamentContainer, ArtistDetails.newInstance())
     }

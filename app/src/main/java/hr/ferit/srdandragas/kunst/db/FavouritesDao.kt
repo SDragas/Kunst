@@ -9,13 +9,12 @@ import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 interface FavouritesDao {
 
     @Insert
-    fun insert(favourite: FavouritesDetails);
+    fun insert(favourite: FavouritesDetails)
 
 
     @Query("SELECT * FROM favourites")
-    fun getAll(): List<FavouritesDetails>;
+    fun getAll(): List<FavouritesDetails>
 
     @Query("DELETE FROM favourites WHERE url = :url")
     fun removeFavourite(url: String)
-
 }

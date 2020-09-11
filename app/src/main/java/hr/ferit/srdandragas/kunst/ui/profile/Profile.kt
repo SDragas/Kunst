@@ -35,10 +35,14 @@ class Profile : Fragment() {
         btn_sign_out.setOnClickListener{
             onSignOutClicked()
         }
-
-
-
+        btn_change_psw.setOnClickListener{
+            onChangePswClicked()
         }
+        }
+
+    private fun onChangePswClicked() {
+        startActivity(Intent(KunstApp.ApplicationContext, ChangePassword::class.java))
+    }
 
     private fun onSignOutClicked() {
         auth.signOut()
