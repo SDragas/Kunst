@@ -4,10 +4,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import hr.ferit.srdandragas.kunst.KunstApp
+import hr.ferit.srdandragas.kunst.model.details.CacheDetails
 import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 
 
-@Database(version = 1, entities = arrayOf(FavouritesDetails::class), exportSchema = false)
+@Database(version = 1, entities = arrayOf(FavouritesDetails::class, CacheDetails::class), exportSchema = false)
 abstract class FavouritesDatabase: RoomDatabase() {
     abstract fun favouritesDao(): FavouritesDao
 

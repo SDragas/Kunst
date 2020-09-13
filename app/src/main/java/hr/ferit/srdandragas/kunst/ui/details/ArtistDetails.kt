@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.koushikdutta.ion.Ion
 import hr.ferit.srdandragas.kunst.KunstApp
 
-import hr.ferit.srdandragas.kunst.R
+
 import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
 import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 import hr.ferit.srdandragas.kunst.repository.ArtDetailsRepository
@@ -19,14 +19,24 @@ import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView
 import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView.Companion.WEB_URL
 import kotlinx.android.synthetic.main.fragment_artist_details.*
 import kotlinx.android.synthetic.main.item_artist.view.*
+import com.google.firebase.firestore.FirebaseFirestore
+import android.R
+import hr.ferit.srdandragas.kunst.model.details.ArtDetails
+import java.util.*
+import kotlin.collections.HashMap
+//import javax.swing.UIManager.put
+
+
+
 
 class ArtistDetails : Fragment() {
     private val db = FavouritesDatabase.getInstance().favouritesDao()
     private val repository = ArtDetailsRepository()
     private var isFavourite = false
+    var firestoreDb = FirebaseFirestore.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_artist_details, container, false)
+        return inflater.inflate(hr.ferit.srdandragas.kunst.R.layout.fragment_artist_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +54,7 @@ class ArtistDetails : Fragment() {
             if(item.url == selectedArt.url)
             {
 
-                favouriteIcon.setImageResource(R.drawable.favourite_icon)
+                favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_icon)
                 isFavourite = true
             }
         }
@@ -68,7 +78,7 @@ class ArtistDetails : Fragment() {
         if(isFavourite == true)
         {
             db.removeFavourite(selectedArt.url)
-            favouriteIcon.setImageResource(R.drawable.favourite_empty_icon)
+            favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_empty_icon)
             return
         }
         val favourites: FavouritesDetails = FavouritesDetails(
@@ -78,7 +88,16 @@ class ArtistDetails : Fragment() {
             webUrl = selectedArt.webUrl
         )
 
-        favouriteIcon.setImageResource(R.drawable.favourite_icon)
+        val firestoreFavourites = ArtDetails(
+            title = selectedArt.title,
+            url = selectedArt.url,
+            description = selectedArt.description,
+            webUrl = selectedArt.webUrl
+        )
+        favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_icon)
+
+        firestoreDb.collection("Favourite_Art").document("Fav").set(firestoreFavourites)
+
         db.insert(favourites)
     }
 
@@ -87,7 +106,7 @@ class ArtistDetails : Fragment() {
         artDetailsTitleText.text = selectedArt.title
         artistDetails.text = selectedArt.description
         Ion.with(artDetailsFeedImage)
-            .placeholder(R.drawable.ic_launcher_background)
+            .placeholder(hr.ferit.srdandragas.kunst.R.drawable.ic_launcher_background)
             .load(selectedArt.url)
     }
 

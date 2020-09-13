@@ -1,6 +1,6 @@
 package hr.ferit.srdandragas.kunst
 
-import android.app.Application//da dobijem kontekst aplikacije
+import android.app.Application
 import android.content.Context
 
 class KunstApp: Application() {
@@ -12,7 +12,7 @@ class KunstApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ApplicationContext = this;
+        ApplicationContext = this
     }
 
 }

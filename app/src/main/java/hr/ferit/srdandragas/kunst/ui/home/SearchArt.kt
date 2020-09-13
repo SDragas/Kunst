@@ -15,11 +15,12 @@ import hr.ferit.srdandragas.kunst.KunstApp
 import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.common.showFragment
 import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
-import hr.ferit.srdandragas.kunst.model.Data
-import hr.ferit.srdandragas.kunst.model.SearchArtistResponse
+import hr.ferit.srdandragas.kunst.model.*
 import hr.ferit.srdandragas.kunst.model.details.ArtDetails
+import hr.ferit.srdandragas.kunst.model.details.CacheDetails
 import hr.ferit.srdandragas.kunst.networking.BackendFactory
 import hr.ferit.srdandragas.kunst.repository.ArtDetailsRepository
+import hr.ferit.srdandragas.kunst.repository.PopularArtRepository
 import hr.ferit.srdandragas.kunst.ui.adapter.ArtistAdapter
 import hr.ferit.srdandragas.kunst.ui.details.ArtistDetails
 import kotlinx.android.synthetic.main.fragment_search_art.*
@@ -30,6 +31,7 @@ import retrofit2.Response
 class SearchArt : Fragment() {
 
     private val adapter by lazy { ArtistAdapter(::onArtClicked) }
+    private val db = FavouritesDatabase.getInstance().favouritesDao()
     val interactor = BackendFactory.getKunstInteractor()
     val repository = ArtDetailsRepository()
     private lateinit var name : String
@@ -45,11 +47,23 @@ class SearchArt : Fragment() {
     }
 
     private fun setupUi() {
-
-
+        val popularRepository = PopularArtRepository().artist
+        val cacheData = db.getAllCache()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-
+        if(cacheData.isEmpty())
+        adapter.setData(popularRepository)
+        else
+        {
+          popularRepository.clear()
+            for(item in cacheData)
+            {
+                popularRepository.add(Data(title = item.title, url = item.webUrl, wall_description = item.description,
+                    images = Images(Web(item.url,"","","",""),Print("","","","",""), Full("","","","",""))
+                    ))
+            }
+            adapter.setData(popularRepository)
+        }
     }
 
     private fun setOnClickListeners() {
@@ -70,10 +84,15 @@ class SearchArt : Fragment() {
 
         override fun onResponse(call: Call<SearchArtistResponse>?, response: Response<SearchArtistResponse>) {
             if (response.isSuccessful) {
+                db.removeCache()
                 adapter.setData(response.body()!!.data)
+                for(item in response.body()!!.data)
+                {
+                    db.insertCache(CacheDetails(title = item.title, url = item.images.web.url, description = item.wall_description, webUrl = item.url) )
+
+                }
 
             }
-
         }
     }
 
@@ -87,5 +106,6 @@ class SearchArt : Fragment() {
         fun newInstance(): Fragment {
             return SearchArt()
         }
+
     }
 }

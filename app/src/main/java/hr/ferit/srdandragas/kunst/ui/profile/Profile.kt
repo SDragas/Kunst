@@ -12,13 +12,14 @@ import hr.ferit.srdandragas.kunst.KunstApp
 
 
 import hr.ferit.srdandragas.kunst.R
+import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
 import hr.ferit.srdandragas.kunst.ui.authentication.MainActivity
 import hr.ferit.srdandragas.kunst.ui.home.StartPage
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class Profile : Fragment() {
     private lateinit var auth: FirebaseAuth
-
+    private val db = FavouritesDatabase.getInstance().favouritesDao()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
 
@@ -48,6 +49,7 @@ class Profile : Fragment() {
         auth.signOut()
         startActivity(Intent(KunstApp.ApplicationContext, MainActivity::class.java))
         activity?.finish()
+        db.removeCache()
     }
 
 
