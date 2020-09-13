@@ -21,19 +21,16 @@ import kotlinx.android.synthetic.main.fragment_artist_details.*
 import kotlinx.android.synthetic.main.item_artist.view.*
 import com.google.firebase.firestore.FirebaseFirestore
 import android.R
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import hr.ferit.srdandragas.kunst.model.details.ArtDetails
 import java.util.*
 import kotlin.collections.HashMap
-//import javax.swing.UIManager.put
-
-
-
-
 class ArtistDetails : Fragment() {
     private val db = FavouritesDatabase.getInstance().favouritesDao()
     private val repository = ArtDetailsRepository()
     private var isFavourite = false
-    var firestoreDb = FirebaseFirestore.getInstance()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(hr.ferit.srdandragas.kunst.R.layout.fragment_artist_details, container, false)
@@ -85,18 +82,11 @@ class ArtistDetails : Fragment() {
             title = selectedArt.title,
             url = selectedArt.url,
             description = selectedArt.description,
-            webUrl = selectedArt.webUrl
+            webUrl = selectedArt.webUrl,
+            technique = selectedArt.technique
         )
 
-        val firestoreFavourites = ArtDetails(
-            title = selectedArt.title,
-            url = selectedArt.url,
-            description = selectedArt.description,
-            webUrl = selectedArt.webUrl
-        )
         favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_icon)
-
-        firestoreDb.collection("Favourite_Art").document("Fav").set(firestoreFavourites)
 
         db.insert(favourites)
     }

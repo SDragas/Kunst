@@ -4,5 +4,6 @@ data class ArtDetails (
     val title:String = "",
     val url:String = "",
     val description: String = "",
-    val webUrl:String = ""
+    val webUrl:String = "",
+    val technique:String = ""
 )

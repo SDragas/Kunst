@@ -58,7 +58,7 @@ class SearchArt : Fragment() {
           popularRepository.clear()
             for(item in cacheData)
             {
-                popularRepository.add(Data(title = item.title, url = item.webUrl, wall_description = item.description,
+                popularRepository.add(Data(title = item.title, url = item.webUrl, wall_description = item.description.orEmpty(),
                     images = Images(Web(item.url,"","","",""),Print("","","","",""), Full("","","","",""))
                     ))
             }
@@ -88,16 +88,15 @@ class SearchArt : Fragment() {
                 adapter.setData(response.body()!!.data)
                 for(item in response.body()!!.data)
                 {
-                    db.insertCache(CacheDetails(title = item.title, url = item.images.web.url, description = item.wall_description, webUrl = item.url) )
+                    db.insertCache(CacheDetails(title = item.title, url = item.images.web.url, description = item.wall_description, webUrl = item.url, technique = item.technique) )
 
                 }
-
             }
         }
     }
 
     private fun onArtClicked(art: Data){
-            val selectedArt: ArtDetails = ArtDetails(art.title, art.images.web.url, art.wall_description, art.url)
+            val selectedArt: ArtDetails = ArtDetails(art.title, art.images.web.url, art.wall_description, art.url, art.technique)
             repository.onArtSelect(selectedArt)
             activity?.showFragment(R.id.frgamentContainer, ArtistDetails.newInstance())
     }

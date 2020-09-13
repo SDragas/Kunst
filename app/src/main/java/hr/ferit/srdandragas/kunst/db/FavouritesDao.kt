@@ -12,12 +12,12 @@ interface FavouritesDao {
     @Insert
     fun insert(favourite: FavouritesDetails)
 
-
     @Query("SELECT * FROM favourites")
     fun getAll(): List<FavouritesDetails>
 
     @Query("DELETE FROM favourites WHERE url = :url")
     fun removeFavourite(url: String)
+
 
     @Insert
     fun insertCache(cache: CacheDetails)

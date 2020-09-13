@@ -3,6 +3,7 @@ package hr.ferit.srdandragas.kunst.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -54,6 +55,24 @@ class Profile : Fragment() {
 
 
     private fun setupUi() {
+        setFavTech()
+    }
+
+    private fun setFavTech() {
+        val data = db.getAll()
+        val techList: MutableList<String> = mutableListOf()
+
+        for(item in data)
+        {
+            techList.add(item.technique)
+
+        }
+        for(item in techList)
+        {
+            favTech.append(item.capitalize())
+            if(item!="")
+            favTech.append("\n")
+        }
     }
 
     companion object {

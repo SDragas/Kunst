@@ -31,6 +31,36 @@
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         />
+    <TextView
+        android:id="@+id/titleTech"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_change_psw"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#DE000000"
+        android:lineSpacingExtra="8dp"
+        android:textSize="25sp"
+        android:text="@string/techniques_liked"
+        />
+    <TextView
+        android:id="@+id/favTech"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/titleTech"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#DE000000"
+        android:lineSpacingExtra="8dp"
+        android:textSize="25sp"
+        android:text=""
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
