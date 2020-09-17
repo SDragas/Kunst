@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.koushikdutta.ion.Ion
@@ -17,6 +18,7 @@ import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
 import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 import hr.ferit.srdandragas.kunst.repository.ArtDetailsRepository
+import hr.ferit.srdandragas.kunst.ui.profile.loggedUser
 import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView
 import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView.Companion.WEB_URL
 import kotlinx.android.synthetic.main.fragment_artist_details.*
@@ -28,7 +30,8 @@ class ArtistDetails : Fragment() {
     private val repository = ArtDetailsRepository()
     private var isFavourite = false
     private lateinit var database: DatabaseReference
-    //val firestoreDb = Firebase.firestore
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_artist_details, container, false)
@@ -37,6 +40,7 @@ class ArtistDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance().reference
+        auth = FirebaseAuth.getInstance()
         checkFavourite()
         setupUi()
         setOnClickListeners()
@@ -49,7 +53,6 @@ class ArtistDetails : Fragment() {
         {
             if(item.url == selectedArt.url)
             {
-
                 favouriteIcon.setImageResource(R.drawable.favourite_icon)
                 isFavourite = true
             }
@@ -75,7 +78,7 @@ class ArtistDetails : Fragment() {
         if(isFavourite == true)
         {
             db.removeFavourite(selectedArt.url)
-            database.child("favourites").child(selectedArt.title).removeValue()
+            database.child("favourites").child("user").child(selectedArt.title).removeValue()
             favouriteIcon.setImageResource(R.drawable.favourite_empty_icon)
             isFavourite = false
             return
@@ -87,13 +90,15 @@ class ArtistDetails : Fragment() {
             description = selectedArt.description,
             webUrl = selectedArt.webUrl,
             technique = selectedArt.technique
+            //uid = getUser()
         )
 
         favouriteIcon.setImageResource(R.drawable.favourite_icon)
         isFavourite = true
         val favId = UUID.randomUUID().toString()
-        database.child("favourites").child(favourites.title).setValue(favourites)
-
+        //Log.d("+++",loggedUser.getUsername())
+        database.child("favourites").child("user").child(favourites.title).setValue(favourites)
+       // Log.d("fav", favourites.toString())
         db.insert(favourites)
     }
 
@@ -105,6 +110,10 @@ class ArtistDetails : Fragment() {
             .placeholder(R.drawable.ic_launcher_background)
             .load(selectedArt.url)
     }
+
+    private fun getUser() = auth.currentUser?.email.toString()
+
+
 
     companion object {
         fun newInstance(): Fragment {

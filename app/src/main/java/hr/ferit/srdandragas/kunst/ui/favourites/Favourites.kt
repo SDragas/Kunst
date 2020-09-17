@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -27,6 +28,7 @@ class Favourites : Fragment() {
     private val repository = ArtDetailsRepository()
     private val adapter by lazy { FavouritesAdapter(::onArtClicked) }
     private lateinit var database: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favourites, container, false)
@@ -43,7 +45,7 @@ class Favourites : Fragment() {
         favouritesRecyclerView.layoutManager = LinearLayoutManager(context)
         favouritesRecyclerView.adapter = adapter
         //val favRep = repository.getSelectedArt()
-       // val onlineFav = database.child("favourites").child(favRep.title)
+        //val onlineFav = database.child("favourites").child("user").
         //Log.d("+++",onlineFav.toString())
        // adapter.setData()
         adapter.setData(db.getAll())

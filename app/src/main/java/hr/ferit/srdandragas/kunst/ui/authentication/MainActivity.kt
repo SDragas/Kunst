@@ -11,7 +11,9 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import hr.ferit.srdandragas.kunst.R
+import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 import hr.ferit.srdandragas.kunst.ui.home.StartPage
+import hr.ferit.srdandragas.kunst.ui.profile.loggedUser
 import kotlinx.android.synthetic.main.activity_main.tv_password
 import kotlinx.android.synthetic.main.activity_main.tv_username
 import kotlinx.android.synthetic.main.activity_main.*
@@ -84,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    loggedUser.setUsername(user?.email.toString())
                     updateUI(user)
                 } else {
                     Toast.makeText(baseContext, "Login failed.",

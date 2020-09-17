@@ -18,6 +18,8 @@ interface FavouritesDao {
     @Query("DELETE FROM favourites WHERE url = :url")
     fun removeFavourite(url: String)
 
+    @Query("SELECT * FROM favourites WHERE uid = :user")
+    fun getAllFav(user: String): List<FavouritesDetails>
 
     @Insert
     fun insertCache(cache: CacheDetails)

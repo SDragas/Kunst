@@ -11,5 +11,6 @@ data class CacheDetails (
     @ColumnInfo(name = "url") val url: String,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "webUrl") val webUrl: String,
-    @ColumnInfo(name = "technique") val technique: String
+    @ColumnInfo(name = "technique") val technique: String,
+    @ColumnInfo(name = "uid") val uid: String? = ""
 )
