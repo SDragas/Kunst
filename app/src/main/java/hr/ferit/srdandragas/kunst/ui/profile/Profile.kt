@@ -14,6 +14,7 @@ import hr.ferit.srdandragas.kunst.KunstApp
 
 import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
+import hr.ferit.srdandragas.kunst.model.details.CacheDetails
 import hr.ferit.srdandragas.kunst.ui.authentication.MainActivity
 import hr.ferit.srdandragas.kunst.ui.home.StartPage
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -21,7 +22,11 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class Profile : Fragment() {
     private lateinit var auth: FirebaseAuth
     private val db = FavouritesDatabase.getInstance().favouritesDao()
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
 
     }
@@ -34,13 +39,13 @@ class Profile : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        btn_sign_out.setOnClickListener{
+        btn_sign_out.setOnClickListener {
             onSignOutClicked()
         }
-        btn_change_psw.setOnClickListener{
+        btn_change_psw.setOnClickListener {
             onChangePswClicked()
         }
-        }
+    }
 
     private fun onChangePswClicked() {
         startActivity(Intent(KunstApp.ApplicationContext, ChangePassword::class.java))
@@ -62,16 +67,21 @@ class Profile : Fragment() {
         val data = db.getAll()
         val techList: MutableList<String> = mutableListOf()
 
-        for(item in data)
-        {
+        for (item in data) {
+
+            if(techList.contains(item.technique))
+            {
+                continue
+            }
             techList.add(item.technique)
 
-        }
-        for(item in techList)
-        {
+            }
+        for (item in techList) {
             favTech.append(item.capitalize())
-            if(item!="")
-            favTech.append("\n")
+            if (item != "") {
+                favTech.append("\n")
+            }
+
         }
     }
 

@@ -2,11 +2,14 @@ package hr.ferit.srdandragas.kunst.ui.favourites
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.common.showFragment
@@ -23,6 +26,7 @@ class Favourites : Fragment() {
     private val db = FavouritesDatabase.getInstance().favouritesDao()
     private val repository = ArtDetailsRepository()
     private val adapter by lazy { FavouritesAdapter(::onArtClicked) }
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favourites, container, false)
@@ -30,6 +34,7 @@ class Favourites : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        database = FirebaseDatabase.getInstance().reference
         setupUi()
         setOnClickListeners()
     }
@@ -37,6 +42,10 @@ class Favourites : Fragment() {
     private fun setupUi() {
         favouritesRecyclerView.layoutManager = LinearLayoutManager(context)
         favouritesRecyclerView.adapter = adapter
+        //val favRep = repository.getSelectedArt()
+       // val onlineFav = database.child("favourites").child(favRep.title)
+        //Log.d("+++",onlineFav.toString())
+       // adapter.setData()
         adapter.setData(db.getAll())
     }
 

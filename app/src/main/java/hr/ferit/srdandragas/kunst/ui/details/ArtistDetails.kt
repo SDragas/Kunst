@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.koushikdutta.ion.Ion
 import hr.ferit.srdandragas.kunst.KunstApp
 
-
+import hr.ferit.srdandragas.kunst.R
 import hr.ferit.srdandragas.kunst.db.FavouritesDatabase
 import hr.ferit.srdandragas.kunst.model.details.FavouritesDetails
 import hr.ferit.srdandragas.kunst.repository.ArtDetailsRepository
@@ -19,25 +21,22 @@ import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView
 import hr.ferit.srdandragas.kunst.ui.webView.ArtWebView.Companion.WEB_URL
 import kotlinx.android.synthetic.main.fragment_artist_details.*
 import kotlinx.android.synthetic.main.item_artist.view.*
-import com.google.firebase.firestore.FirebaseFirestore
-import android.R
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import hr.ferit.srdandragas.kunst.model.details.ArtDetails
 import java.util.*
-import kotlin.collections.HashMap
+
 class ArtistDetails : Fragment() {
     private val db = FavouritesDatabase.getInstance().favouritesDao()
     private val repository = ArtDetailsRepository()
     private var isFavourite = false
-
+    private lateinit var database: DatabaseReference
+    //val firestoreDb = Firebase.firestore
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(hr.ferit.srdandragas.kunst.R.layout.fragment_artist_details, container, false)
+        return inflater.inflate(R.layout.fragment_artist_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        database = FirebaseDatabase.getInstance().reference
         checkFavourite()
         setupUi()
         setOnClickListeners()
@@ -51,7 +50,7 @@ class ArtistDetails : Fragment() {
             if(item.url == selectedArt.url)
             {
 
-                favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_icon)
+                favouriteIcon.setImageResource(R.drawable.favourite_icon)
                 isFavourite = true
             }
         }
@@ -68,6 +67,7 @@ class ArtistDetails : Fragment() {
         startActivity(intent)
     }
 
+
     private fun onFavouriteClicked() {
 
         val selectedArt = repository.getSelectedArt()
@@ -75,8 +75,11 @@ class ArtistDetails : Fragment() {
         if(isFavourite == true)
         {
             db.removeFavourite(selectedArt.url)
-            favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_empty_icon)
+            database.child("favourites").child(selectedArt.title).removeValue()
+            favouriteIcon.setImageResource(R.drawable.favourite_empty_icon)
+            isFavourite = false
             return
+
         }
         val favourites: FavouritesDetails = FavouritesDetails(
             title = selectedArt.title,
@@ -86,7 +89,10 @@ class ArtistDetails : Fragment() {
             technique = selectedArt.technique
         )
 
-        favouriteIcon.setImageResource(hr.ferit.srdandragas.kunst.R.drawable.favourite_icon)
+        favouriteIcon.setImageResource(R.drawable.favourite_icon)
+        isFavourite = true
+        val favId = UUID.randomUUID().toString()
+        database.child("favourites").child(favourites.title).setValue(favourites)
 
         db.insert(favourites)
     }
@@ -96,7 +102,7 @@ class ArtistDetails : Fragment() {
         artDetailsTitleText.text = selectedArt.title
         artistDetails.text = selectedArt.description
         Ion.with(artDetailsFeedImage)
-            .placeholder(hr.ferit.srdandragas.kunst.R.drawable.ic_launcher_background)
+            .placeholder(R.drawable.ic_launcher_background)
             .load(selectedArt.url)
     }
 
