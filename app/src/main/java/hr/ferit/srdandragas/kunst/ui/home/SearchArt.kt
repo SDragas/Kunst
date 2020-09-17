@@ -57,6 +57,7 @@ class SearchArt : Fragment() {
         adapter.setData(popularRepository)
         else
         {
+            searchProgress.visibility = View.GONE
           popularRepository.clear()
             for(item in cacheData)
             {
