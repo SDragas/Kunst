@@ -1,11 +1,14 @@
 package hr.ferit.srdandragas.kunst.ui.authentication
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
         btn_log_in.setOnClickListener {
             doLogin()
+            hideKeyboard()
         }
         btn_forgot_password.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -64,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
     private fun doLogin() {
+
         if (tv_username.text.toString().isEmpty()) {
             tv_username.error = "Please enter email"
             tv_username.requestFocus()
@@ -113,5 +118,16 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun hideKeyboard()
+    {
+        val view = this.currentFocus
+        if(view != null)
+        {
+            val hideMe = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideMe.hideSoftInputFromWindow(view.windowToken,0)
+        }
+        this.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 }

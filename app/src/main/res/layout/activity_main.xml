@@ -53,6 +53,7 @@
             android:text="@string/forgot_password"
             android:layout_gravity="end"
             android:textAllCaps="false"/>
+
     </LinearLayout>
 
     <Button

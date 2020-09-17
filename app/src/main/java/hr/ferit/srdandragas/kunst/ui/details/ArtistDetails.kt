@@ -89,14 +89,16 @@ class ArtistDetails : Fragment() {
             url = selectedArt.url,
             description = selectedArt.description,
             webUrl = selectedArt.webUrl,
-            technique = selectedArt.technique
-            //uid = getUser()
+            technique = selectedArt.technique,
+            uid = getUser()
         )
 
         favouriteIcon.setImageResource(R.drawable.favourite_icon)
         isFavourite = true
         val favId = UUID.randomUUID().toString()
+        //dohvatiti sve korisnike iz baze, searchat po mailu preko autorizacije, naci id usera
         //Log.d("+++",loggedUser.getUsername())
+        //database.child("favourites").child(favourites.uid.toString()).setValue(favourites)
         database.child("favourites").child("user").child(favourites.title).setValue(favourites)
        // Log.d("fav", favourites.toString())
         db.insert(favourites)

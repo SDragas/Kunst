@@ -32,6 +32,7 @@ class ArtistAdapter(private val artClickListener: ArtClickListener): RecyclerVie
         notifyDataSetChanged()
     }
 
+    fun getData():List<Data> = artist
 }
 
 class ArtistHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

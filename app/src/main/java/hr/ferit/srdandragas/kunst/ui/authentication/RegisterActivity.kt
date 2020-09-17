@@ -6,18 +6,23 @@ import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import hr.ferit.srdandragas.kunst.KunstApp
 import hr.ferit.srdandragas.kunst.R
+import hr.ferit.srdandragas.kunst.model.details.User
 import kotlinx.android.synthetic.main.activity_main.tv_password
 import kotlinx.android.synthetic.main.activity_main.tv_username
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseDb: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         auth = FirebaseAuth.getInstance()
+        firebaseDb = FirebaseDatabase.getInstance().reference
         btn_sign_up.setOnClickListener {
             signUpUser()
         }
@@ -31,9 +36,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun signUpUser() {
+        var emailUser = tv_username.text.toString()
+        var passUser = tv_password.text.toString()
         if (tv_username.text.toString().isEmpty()) {
             tv_username.error = "Please enter email"
             tv_username.requestFocus()
+
             return
         }
 
@@ -52,6 +60,8 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(tv_username.text.toString(), tv_password.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val newUser = User(0,emailUser,passUser)
+                    firebaseDb.child("users").child(newUser.userId.toString()).setValue(newUser)
                     val user = auth.currentUser
                     user?.sendEmailVerification()
                         ?.addOnCompleteListener { task ->
@@ -60,6 +70,8 @@ class RegisterActivity : AppCompatActivity() {
                                 finish()
                             }
                         }
+
+
                 } else {
                     Toast.makeText(baseContext, "Sign Up failed. Try again after some time.",
                         Toast.LENGTH_SHORT).show()

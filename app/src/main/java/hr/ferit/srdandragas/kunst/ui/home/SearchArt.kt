@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.ferit.srdandragas.kunst.KunstApp
@@ -71,9 +73,12 @@ class SearchArt : Fragment() {
     }
 
     private fun getArtistResponse() {
+        adapter.setData(listOf())
+        searchProgress.visibility = View.VISIBLE
         name = searchEditText.text.toString()
         val map = mapOf<String, String>(Pair("q", name),  Pair("limit", "5"),Pair("has_image", "1"),Pair("indent", "3"))
         interactor.getArt(map, getArtistCallback())
+        hideKeyboard()
 
     }
 
@@ -84,6 +89,7 @@ class SearchArt : Fragment() {
 
         override fun onResponse(call: Call<SearchArtistResponse>?, response: Response<SearchArtistResponse>) {
             if (response.isSuccessful) {
+                searchProgress.visibility = View.GONE
                 db.removeCache()
                 adapter.setData(response.body()!!.data)
                 for(item in response.body()!!.data)
@@ -91,6 +97,13 @@ class SearchArt : Fragment() {
                     db.insertCache(CacheDetails(title = item.title, url = item.images.web.url, description = item.wall_description, webUrl = item.url, technique = item.technique) )
 
                 }
+                if(adapter.getData().isEmpty())
+                {
+                    Toast.makeText(KunstApp.ApplicationContext, "No art found.",
+                        Toast.LENGTH_SHORT).show()
+                    adapter.setData(PopularArtRepository().artist)
+                }
+
             }
         }
     }
@@ -99,6 +112,17 @@ class SearchArt : Fragment() {
             val selectedArt: ArtDetails = ArtDetails(art.title, art.images.web.url, art.wall_description, art.url, art.technique)
             repository.onArtSelect(selectedArt)
             activity?.showFragment(R.id.frgamentContainer, ArtistDetails.newInstance())
+    }
+
+    private fun hideKeyboard()
+    {
+        val view = activity?.currentFocus
+        if(view != null)
+        {
+            val hideMe = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            hideMe.hideSoftInputFromWindow(view.windowToken,0)
+        }
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
     companion object {
